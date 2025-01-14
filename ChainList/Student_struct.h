@@ -13,8 +13,8 @@ Status compare(struct Student Student1, struct Student Student2)
 {
 	if (
 	    Student1.num == Student2.num &&
-	    strcmp(Student1.name, Student2.name)==0 &&
-	    strcmp(Student1.sex,  Student2.sex)==0 &&
+	    strcmp(Student1.name, Student2.name) == 0 &&
+	    strcmp(Student1.sex,  Student2.sex) == 0 &&
 	    Student1.age == Student2.age) {
 		return TRUE;
 	}

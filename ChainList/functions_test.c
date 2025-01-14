@@ -29,8 +29,8 @@ int main()
 	printf("%d\n", locateElem(Class1_students_info, eleme2, &len1));
 	listDeleteMember(&Class1_students_info, len1, &eleme, &len1);          //与顺序表不同，这里我们删一下最后一个元素，看会不会出现访问空指针造成的错误
 	displayList(Class1_students_info);
-	printf("%d",ifListIsEqual(Class1_students_info,Class1_students_info2));
-	printf("%d",ifListIsEqual(Class1_students_info,Class1_students_info));
+	printf("%d", ifListIsEqual(Class1_students_info, Class1_students_info2, &len1, &len2));
+	printf("%d", ifListIsEqual(Class1_students_info, Class1_students_info, &len1, &len1));
 
 	return 0;
 }

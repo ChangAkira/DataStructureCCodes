@@ -75,25 +75,24 @@ Status ifMemberIsEqual(ElemType e1, ElemType e2)
 	}
 }
 
-Status ifListIsEqual(struct chainListNode N1, struct chainListNode N2)
+Status ifListIsEqual(struct chainListNode N1, struct chainListNode N2, int *len1, int *len2)
 {
-	if(N1.nextNode==NULL&&N2.nextNode==NULL){
+	if (N1.nextNode == NULL && N2.nextNode == NULL) {
 		return TRUE;
 	}
-	int len = listLength(N1);                    //接下来会改变N1和N2的值，因此需要将长度先保存一下
-	if (len != listLength(N2)) {
+	if (*len1 != *len2) {
 		return FALSE;
 	}
 	else {
 		int temp;
 		N1 = *(N1.nextNode);
 		N2 = *(N2.nextNode);
-		for (temp = 1; temp < len + 1; temp++) {
+		for (temp = 1; temp < *len1 + 1; temp++) {
 			if (!ifMemberIsEqual(N1.data, N2.data)) {
 				return FALSE;
 			}
 			else {
-				if (temp != len) {       //防止访问空指针
+				if (temp != *len1) {       //防止访问空指针
 					N1 = *(N1.nextNode);
 					N2 = *(N2.nextNode);
 				}
@@ -104,7 +103,7 @@ Status ifListIsEqual(struct chainListNode N1, struct chainListNode N2)
 	}
 }
 
-Status listInsertMember(struct chainListNode *N, int ip, ElemType newMember, int *len)    //最好是将len = listLength(N)作为参数传入，否则判断ip是否合法时还需要计算一次len，也就是遍历一遍链表，增加了时间复杂度。课本上的做法是直接找ip对应的节点，找不到的话认为它是非法的，这样写同样可以避免为了求长度而遍历一遍链表，但写起来比较麻烦。
+Status listInsertMember(struct chainListNode *N, int ip, ElemType newMember, int *len)    //最好是将len = listLength(N)作为参数传入，否则判断ip是否合法时还需要计算一次len，也就是遍历一遍链表，增加了时间复杂度。课本上的做法是直接找ip对应的节点，找不到的话认为它是非法的，这样写同样可以避免为了求长度而遍历一遍链表，但写起来比较麻烦。并且我们现在传入len，可以顺便在增加和删除元素的时候将len对应改变，防止了主程序中len值还是旧的值的错误。
 {
 	if (ip < 1 || ip > *len + 1) {
 		return ERROR;
@@ -138,8 +137,9 @@ Status listDeleteMember(struct chainListNode *N, int ip, ElemType *getIt, int *l
 	}
 	*getIt = (N_del_prior->nextNode)->data;                    //N_del_prior的下一个节点的data赋值给getIt指针的解引用
 	N_del_next = N_del_prior->nextNode->nextNode;
-	N_del_prior->nextNode = N_del_next;
 	free(N_del_prior->nextNode);
+	N_del_prior->nextNode = N_del_next;
+
 	*len = *len - 1;
 	return OK;
 }
